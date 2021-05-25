@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Post{% endblock title %}
+{% block content %}
+
+    {% for post in object_list %}
+        <div class="card"> 
+            <div class="card-header"> 
+                <span class="font-weight-bold">{{ post.title }}</span> &middot;
+                <span class="text-muted">by {{ post.author }} | {{ post.date }}</span>
+            </div>
+        <div class="card-body">
+            <p>{{ post.body }}</p> <a href="{% url 'post_edit' post.pk %}">Edit</a> |
+            <a href="{% url 'post_delete' post.pk %}">Delete</a></p>
+        </div>
+        <div class="card-footer">
+    <br/>
+    <h2>Comments...</h2>
+    <br/>
+    {% if not post.comments.all %}
+        No Comments Yet...<a href="{% url 'add_comment' post.pk %}" >Add One</a>
+    {% else %}
+    <a href="{% url 'add_comment' post.pk %}">Add Comment</a>
+    <br/><br/>
+
+        {% for comment in post.comments.all %}
+        <strong>
+            {{ comment.author }} - 
+            {{ comment.date }}
+        </strong>
+        <br/>
+        {{ comment.body }}
+        <br/>
+        {% endfor %}
+    {% endif %}
+    <br/>
+            </div>
+            </div> 
+            <br />
+    {% endfor %}
+{% endblock content %}
